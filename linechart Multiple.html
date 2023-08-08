@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multiple Line Charts</title>
+</head>
+<body>
+    <h1>Multiple Line Charts</h1>
+    <canvas id="lineChartMultiple"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('lineChartMultiple').getContext('2d');
+        var labels = {{ labels|tojson }};
+        var chartData = {{ chart_data|tojson }};
+        var datasets = [];
+
+        for (var i = 0; i < chartData.length; i++) {
+            var dataset = {
+                label: 'Dataset ' + (i + 1),
+                data: chartData[i],
+                borderColor: 'rgb(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ')',
+                fill: false,
+                tension: 0.1
+            };
+            datasets.push(dataset);
+        }
+
+        var config = {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        enabled: true,
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                }
+            }
+        };
+
+        var myChart = new Chart(ctx, config);
+    </script>
+</body>
+</html>
